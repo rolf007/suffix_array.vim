@@ -25,20 +25,20 @@ function! suffix_array#SuffixArray(strings)
 	return s
 endfunction
 
-function! suffix_array#LongestCommonSubstring(suffix_tree, strings)
+function! suffix_array#LongestCommonSubstring(suffix_array, strings)
 	let ret = [0,0,0]
 	let bestl = 0
-	for i in range(len(a:suffix_tree))
+	for i in range(len(a:suffix_array))
 		if i != 0
-			if a:suffix_tree[i][1] != a:suffix_tree[i-1][1]
-				let l = s:LCP(a:strings[a:suffix_tree[i  ][1]][0], a:suffix_tree[i  ][0], a:strings[a:suffix_tree[i  ][1]][2],
-				          \ a:strings[a:suffix_tree[i-1][1]][0], a:suffix_tree[i-1][0], a:strings[a:suffix_tree[i-1][1]][2])
+			if a:suffix_array[i][1] != a:suffix_array[i-1][1]
+				let l = s:LCP(a:strings[a:suffix_array[i  ][1]][0], a:suffix_array[i  ][0], a:strings[a:suffix_array[i  ][1]][2],
+				          \ a:strings[a:suffix_array[i-1][1]][0], a:suffix_array[i-1][0], a:strings[a:suffix_array[i-1][1]][2])
 				if l > bestl
 					let bestl = l
-					if a:suffix_tree[i][1] == 0
-						let ret = [a:suffix_tree[i][0], a:suffix_tree[i-1][0], l]
+					if a:suffix_array[i][1] == 0
+						let ret = [a:suffix_array[i][0], a:suffix_array[i-1][0], l]
 					else
-						let ret = [a:suffix_tree[i-1][0], a:suffix_tree[i][0], l]
+						let ret = [a:suffix_array[i-1][0], a:suffix_array[i][0], l]
 					endif
 				endif
 			endif

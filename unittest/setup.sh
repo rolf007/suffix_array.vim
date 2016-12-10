@@ -12,7 +12,8 @@ set errorformat=%f\ line\ %l:\ %m
 nnoremap q :qall!<CR>
 set tabstop=4
 
-call timer_start(500, {-> <SID>Test()})
+"call timer_start(500, {-> <SID>Test()})
+autocmd VimEnter * :call s:Test()
 
 function! s:Test()
 	source test.vim
