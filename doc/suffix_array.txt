@@ -1,6 +1,5 @@
 *suffix_array.txt*	For Vim version 7.4+	December 2016
 *suffix_array* *SuffixArray* by Rolf Asmund
-
 =============================================================================
           ________  ____  ____   _______   _______  __     ___  ___
          /"       )("  _)(_ " ) /"     "( /"     "((" \   ("  \/"  )
@@ -17,5 +16,75 @@
          /   /  \\  \ (:  __   \ (:  __   \  /   /  \\  \  /   /
         (___/    \___)(__(  \___)(__(  \___)(___/    \___)(___/
 
+=============================================================================
+CONTENTS                                                *suffix-array-contents*
+
+    1. Intro...............................................|suffix-array-intro|
+    2. Functions.......................................|suffix-array-functions|
+    3. Options...........................................|suffix-array-options|
+    4. Future.............................................|suffix-array-future|
+
+=============================================================================
+INTRO                                                      *suffix-array-intro*
+    Suffix Array is a math library for vim. It can generate suffix arrays
+    for strings and lists. It also contains a function for finding the
+    longest common substring for two strings by using the suffix array for
+    these two strings.
+    It's algorithmic complexity is O(n*log(n)), although it is theoretically
+    possible to generate a suffix array in O(n).
+=============================================================================
+FUNCTIONS                                              *suffix-array-functions*
+>
+	suffix_array#SuffixArray(strings)
+<
+    generate a suffix array for the given strings.
+    Input:
+    A |List| of strings. Each string is a |List| with 3 elements:
+    A |String|, a start index and an end index into that |String|
+    Output:
+    A |List| that has the same length as the sum of the input strings.
+    Each element in the |List| is a |List| with 2 elemets:
+    An index into the input string, and an index indicating what input string
+    the first index refers to.
+
+    Example:
+    Generate the suffix array for 'banana':
+    :echo suffix_array#SuffixArray([["banana", 0, len("banana")]])
+    [[5, 0], [3, 0], [1, 0], [0, 0], [4, 0], [2, 0]]
+
+>
+	suffix_array#LongestCommonSubstring(sa, strings)
+<
+    Find the longest common substring for two strings, given their suffix
+    array.
+    Input:
+    The suffix array and the strings used to generate the suffix array
+    Output:
+    A |List| with three elements:
+    The index into the first string,
+    The index into the second string,
+    The length of the longest common substring
+
+    Example:
+    :let strings = [["012abcd345", 0, 10], ["67abcd89", 0, 8]]
+    :let sa = suffix_array#SuffixArray(strings)
+    :let res = suffix_array#LongestCommonSubstring(sa, strings)
+    :echo res
+    [3,2,4]
+    :echo strpart("012abcd345", res[0], res[2])
+    abcd
+    :echo strpart("67abcd89", res[1], res[2])
+    abcd
+=============================================================================
+OPTIONS                                                  *suffix-array-options*
+    >
+    g:loaded_suffix_array
+>
+use g:loaded_suffix_array to see if plugin is installed.
+
+=============================================================================
+FUTURE                                                    *suffix-array-future*
+   - create suffix array in O(n)
+   - find substring in O(log(n)) given the suffix array
 =============================================================================
 vim:tw=78:ts=8:ft=help:norl:

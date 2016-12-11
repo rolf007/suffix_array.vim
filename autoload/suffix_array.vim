@@ -9,8 +9,20 @@ function! s:LCP(a, a0, a1, b, b0, b1)
 	return l
 endfunction
 
-func! s:MyCompare(i1, i2)
-	return a:i1 == a:i2 ? 0 : a:i1 > a:i2 ? 1 : -1
+func! s:MyCompare(x, y) dict
+	let len_x = self.strings[a:x[1]][2] - a:x[0]
+	let len_y = self.strings[a:y[1]][2] - a:y[0]
+	let l = min([len_x, len_y])
+	for j in range(l)
+		let c_x = self.strings[a:x[1]][0][j+a:x[0]]
+		let c_y = self.strings[a:y[1]][0][j+a:y[0]]
+		if c_x < c_y
+			return -1
+		elseif c_x > c_y
+			return 1
+		endif
+	endfor
+	return len_x == len_y ? 0 : len_x > len_y ? 1 : -1
 endfunc
 
 function! suffix_array#SuffixArray(strings)
@@ -21,7 +33,7 @@ function! suffix_array#SuffixArray(strings)
 			call add(s, [i,j])
 		endfor
 	endfor
-	call sort(s, {a,b -> s:MyCompare(strpart(a:strings[a[1]][0], a[0]), strpart(a:strings[b[1]][0], b[0])) })
+	call sort(s, "s:MyCompare", {"strings":a:strings})
 	return s
 endfunction
 
